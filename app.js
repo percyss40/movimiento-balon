@@ -57,6 +57,10 @@ const playerPhotoMap = {
   "player-yavorski-javier": "assets/players/yavorski-javier.png",
   "player-zapana-daniel": "assets/players/zapana-daniel.jpeg"
 };
+const mvpNewsPhotoMap = {
+  "player-perez-lezcano-francisco": "FOTOS MVP/FRANCISCO PEREZ LEZCANO MVP.png"
+};
+
 const playerPhotoFocusMap = {
   "player-zapana-daniel": "center 34%"
 };
@@ -143,7 +147,7 @@ const importedMatches2025Clausura = [
   {"id":"match-2025-09-28","date":"2025-09-28","venue":"Brown","teamA":[],"teamB":["player-rodri","player-sena-ian","player-cardozo-manuel","player-perez-lezcano-francisco","player-zapana-daniel","player-yavorski-javier","player-conil-nahuel","player-schneider-agustin","player-boichuk-franco","player-bustos-franco","player-memler-sebastian","player-chesani-luciano"],"scoreA":0,"scoreB":0,"scorers":["player-sena-ian","player-cardozo-manuel","player-schneider-agustin","player-schneider-agustin","player-bustos-franco","player-bustos-franco","player-bustos-franco","player-bustos-franco","player-perez-lezcano-francisco","player-perez-lezcano-francisco","player-yavorski-javier","player-yavorski-javier","player-yavorski-javier"],"assisters":[],"mvp":"player-bustos-franco","comment":""},
   {"id":"match-2025-10-05","date":"2025-10-05","venue":"Brown","teamA":["player-chino","player-panozzo-emiliano","player-martinez-alejandro","player-boichuk-franco","player-cortez-joaquin","player-chesani-luciano","player-memler-sebastian"],"teamB":["player-perez-lezcano-francisco","player-schneider-agustin","player-cardozo-manuel","player-zapana-daniel"],"scoreA":1,"scoreB":0,"scorers":["player-panozzo-emiliano","player-perez-lezcano-francisco","player-chino","player-chino","player-cortez-joaquin","player-cortez-joaquin","player-cortez-joaquin","player-cortez-joaquin"],"assisters":[],"mvp":"player-cortez-joaquin","comment":""},
   {"id":"match-2025-10-12","date":"2025-10-12","venue":"Brown","teamA":["player-cardozo-manuel","player-perez-lezcano-francisco","player-conil-nahuel","player-romero-lucas","player-bustos-franco","player-chesani-luciano","player-memler-sebastian"],"teamB":["player-schneider-agustin","player-chino","player-pereyra-gabriel","player-cortez-joaquin","player-zapana-daniel"],"scoreA":1,"scoreB":0,"scorers":["player-memler-sebastian","player-memler-sebastian","player-bustos-franco","player-romero-lucas","player-romero-lucas","player-perez-lezcano-francisco","player-perez-lezcano-francisco","player-chino","player-cortez-joaquin","player-cortez-joaquin","player-chesani-luciano","player-chesani-luciano","player-pereyra-gabriel"],"assisters":[],"mvp":"player-chesani-luciano","comment":""},
-  {"id":"match-2025-10-19","date":"2025-10-19","venue":"Brown","teamA":["player-zapana-daniel","player-panozzo-emiliano","player-yavorski-javier","player-schneider-agustin","player-bustos-franco","player-chesani-luciano","player-memler-sebastian"],"teamB":["player-geslao-gaston","player-romero-lucas","player-perez-lezcano-francisco","player-pereyra-gabriel","player-cortez-joaquin"],"scoreA":1,"scoreB":0,"scorers":["player-memler-sebastian","player-memler-sebastian","player-bustos-franco","player-romero-lucas","player-romero-lucas","player-perez-lezcano-francisco","player-perez-lezcano-francisco","player-chino","player-cortez-joaquin","player-cortez-joaquin","player-chesani-luciano","player-chesani-luciano","player-pereyra-gabriel"],"assisters":[],"mvp":"player-perez-lezcano-francisco","comment":""},
+  {"id":"match-2025-10-19","date":"2025-10-19","venue":"Brown","teamA":["player-zapana-daniel","player-panozzo-emiliano","player-yavorski-javier","player-schneider-agustin","player-bustos-franco","player-chesani-luciano","player-memler-sebastian"],"teamB":["player-geslao-gaston","player-romero-lucas","player-perez-lezcano-francisco","player-pereyra-gabriel","player-cortez-joaquin"],"scoreA":1,"scoreB":0,"scorers":["player-memler-sebastian","player-memler-sebastian","player-bustos-franco","player-romero-lucas","player-romero-lucas","player-perez-lezcano-francisco","player-perez-lezcano-francisco","player-chino","player-cortez-joaquin","player-cortez-joaquin","player-chesani-luciano","player-chesani-luciano","player-pereyra-gabriel"],"assisters":[],"mvp":"player-perez-lezcano-francisco","newsText":"Fran se lleva el MVP tras lograr el batacazo en un gran partido en el que metió 5 goles e hizo ganar a \"la cara de la derrota\" en un partido que parecía desequilibrado a favor del equipo blanco.","comment":""},
   {"id":"match-2025-11-02","date":"2025-11-02","venue":"Brown","teamA":[],"teamB":["player-cardozo-manuel","player-perez-lezcano-francisco","player-chino","player-zapana-daniel","player-pereyra-gabriel","player-panozzo-emiliano","player-martinez-alejandro","player-yavorski-javier","player-conil-nahuel","player-boichuk-franco","player-cortez-joaquin","player-chesani-luciano","player-memler-sebastian"],"scoreA":0,"scoreB":0,"scorers":["player-martinez-alejandro","player-boichuk-franco","player-cardozo-manuel","player-panozzo-emiliano","player-panozzo-emiliano","player-panozzo-emiliano","player-panozzo-emiliano","player-memler-sebastian","player-perez-lezcano-francisco","player-perez-lezcano-francisco","player-chino","player-chino","player-pereyra-gabriel","player-pereyra-gabriel","player-pereyra-gabriel","player-yavorski-javier","player-yavorski-javier","player-yavorski-javier","player-yavorski-javier"],"assisters":[],"mvp":"player-panozzo-emiliano","comment":""},
   {"id":"match-2025-11-23","date":"2025-11-23","venue":"Brown","teamA":["player-sena-ian","player-zapana-daniel","player-pereyra-gabriel","player-yavorski-javier","player-bustos-franco","player-chesani-luciano"],"teamB":["player-perez-lezcano-francisco","player-panozzo-emiliano","player-cardozo-manuel","player-boichuk-franco","player-cortez-joaquin","player-memler-sebastian"],"scoreA":1,"scoreB":0,"scorers":["player-sena-ian","player-sena-ian","player-boichuk-franco","player-bustos-franco","player-cortez-joaquin","player-chesani-luciano","player-chesani-luciano","player-pereyra-gabriel","player-pereyra-gabriel","player-pereyra-gabriel","player-pereyra-gabriel"],"assisters":[],"mvp":"player-chesani-luciano","comment":""},
   {"id":"match-2025-11-30","date":"2025-11-30","venue":"Brown","teamA":[],"teamB":["player-cabrera-gonzalo","player-chemes-tomas","player-cardozo-manuel","player-chino","player-zapana-daniel","player-pereyra-gabriel","player-panozzo-emiliano","player-yavorski-javier","player-romero-lucas","player-boichuk-franco","player-cortez-joaquin","player-bustos-franco","player-chesani-luciano"],"scoreA":0,"scoreB":0,"scorers":["player-cabrera-gonzalo","player-cabrera-gonzalo","player-boichuk-franco","player-boichuk-franco","player-cardozo-manuel","player-cardozo-manuel","player-cardozo-manuel","player-bustos-franco","player-romero-lucas","player-romero-lucas","player-romero-lucas","player-chino","player-chino","player-chesani-luciano","player-chesani-luciano","player-chesani-luciano","player-pereyra-gabriel","player-pereyra-gabriel","player-yavorski-javier","player-yavorski-javier","player-yavorski-javier"],"assisters":[],"mvp":"player-chesani-luciano","comment":""}
@@ -529,11 +533,14 @@ function withImportedData(loaded) {
       if ((player[key] === undefined || player[key] === "") && basePlayer?.[key] !== undefined) player[key] = basePlayer[key];
     });
   });
+  const importedMatchMap = Object.fromEntries(importedMatches.map((m) => [m.id, m]));
   const existingMatches = new Set(loaded.matches.map((match) => match.id));
   importedMatches.forEach((match) => {
     if (!existingMatches.has(match.id)) loaded.matches.push({ ...match, comment: "", assisters: [] });
   });
   loaded.matches.forEach((match) => {
+    const src = importedMatchMap[match.id];
+    if (src?.newsText && !match.newsText) match.newsText = src.newsText;
     if (match.comment && match.comment.startsWith("Migrado desde")) match.comment = "";
     match.teamA = cleanPlayerIds(match.teamA || []);
     match.teamB = cleanPlayerIds(match.teamB || []);
@@ -901,7 +908,38 @@ function renderDashboard() {
     .slice(0, 5)
     .map((p) => `<div class="mini-row"><strong>${p.nickname}</strong><span>${stats[p.id].points} pts | ${stats[p.id].goals} goles</span></div>`)
     .join("") || empty("Cargá jugadores para ver destacados.");
+  renderHomeNews();
   renderHomeGallery();
+}
+
+function renderHomeNews() {
+  const el = document.getElementById("home-news");
+  if (!el) return;
+
+  const sorted = state.matches.slice().sort((a, b) => b.date.localeCompare(a.date));
+  const featured = sorted.find(m => m.newsText && m.newsText.trim());
+
+  if (!featured) { el.innerHTML = ""; return; }
+
+  const photo = featured.mvp ? mvpNewsPhotoMap[featured.mvp] : null;
+  const player = featured.mvp ? byId(featured.mvp) : null;
+  const meses = ["Ene","Feb","Mar","Abr","May","Jun","Jul","Ago","Sep","Oct","Nov","Dic"];
+  const [y, mo, day] = featured.date.split("-");
+  const dateLabel = `${day} ${meses[Number(mo)-1]} ${y}`;
+
+  el.innerHTML = `
+    <div class="home-news-card">
+      ${photo
+        ? `<img class="home-news-photo" src="${photo}" alt="${player?.nickname || 'MVP'}">`
+        : `<div class="home-news-photo-placeholder">⚽</div>`
+      }
+      <div class="home-news-gradient"></div>
+      <div class="home-news-body">
+        <div class="home-news-badge">MVP · ${dateLabel}</div>
+        <p class="home-news-text">${featured.newsText}</p>
+        ${player ? `<div class="home-news-mvp-name">${player.nickname}</div>` : ""}
+      </div>
+    </div>`;
 }
 
 function renderHomeGallery() {
@@ -2402,6 +2440,7 @@ window.editMatch = (id) => {
   $("venue").value = m.venue;
   $("match-outcome").value = m.scoreA > m.scoreB ? "A" : m.scoreB > m.scoreA ? "B" : "draw";
   $("mvp").value = m.mvp;
+  $("newsText").value = m.newsText || "";
   $("comment").value = m.comment;
   setMulti("team-a", m.teamA);
   setMulti("team-b", m.teamB);
@@ -2593,6 +2632,7 @@ $("match-form").addEventListener("submit", (event) => {
     scorers: parsePlayerList($("scorers").value),
     assisters: [],
     mvp: $("mvp").value,
+    newsText: $("newsText").value.trim(),
     comment: $("comment").value.trim()
   };
   state.matches = state.matches.filter((m) => m.id !== id).concat(match);
