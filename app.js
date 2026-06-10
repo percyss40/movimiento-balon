@@ -312,8 +312,14 @@ async function loadFromCloud({ quiet = false } = {}) {
     return;
   }
   if (!data?.data?.players || !data?.data?.matches) return;
-  state = withImportedData(data.data);
-  renderAll();
+  try {
+    state = withImportedData(data.data);
+    renderAll();
+  } catch (e) {
+    console.error("Error procesando datos de la nube:", e);
+    if (!quiet) alert("Error al procesar datos de la nube. Usando datos locales.");
+    return;
+  }
   if (!quiet) alert("Datos cargados desde la nube.");
 }
 
