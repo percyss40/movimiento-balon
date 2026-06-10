@@ -960,7 +960,7 @@ function renderTopScorer() {
 
   el.innerHTML = `
     <div class="home-news-card home-scorer-card">
-      ${photo ? `<img class="home-news-photo" src="${photo}" alt="${player.nickname}" style="object-position:center top">` : `<div class="home-news-photo-placeholder">⚽</div>`}
+      ${photo ? `<img class="home-news-photo" src="${photo}" alt="${player.nickname}" style="object-fit:contain;object-position:center center">` : `<div class="home-news-photo-placeholder">⚽</div>`}
       <div class="home-news-gradient"></div>
       ${adminBtn}
       <div class="home-news-body">
