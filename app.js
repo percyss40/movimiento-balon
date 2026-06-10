@@ -938,9 +938,7 @@ function renderTopScorer() {
   const player = byId(playerId);
 
   const photo = player.featurePhoto || playerPhotoMap[playerId];
-  const adminBtn = isAdmin()
-    ? `<button class="photo-upload-btn" data-upload-scorer-photo="${playerId}" title="Cambiar foto">📷</button>`
-    : "";
+  const adminBtn = `<button class="photo-upload-btn" data-upload-scorer-photo="${playerId}" data-admin-only title="Cambiar foto">📷</button>`;
 
   const maxGoals = ranked[0][1];
   const listRows = ranked.slice(0, 8).map(([id, g], i) => {
@@ -993,9 +991,7 @@ function renderHomeNews() {
   const meses = ["Ene","Feb","Mar","Abr","May","Jun","Jul","Ago","Sep","Oct","Nov","Dic"];
   const [y, mo, day] = featured.date.split("-");
   const dateLabel = `${day} ${meses[Number(mo)-1]} ${y}`;
-  const adminBtn = isAdmin()
-    ? `<button class="photo-upload-btn" data-upload-news-photo="${featured.id}" title="Cambiar foto">📷</button>`
-    : "";
+  const adminBtn = `<button class="photo-upload-btn" data-upload-news-photo="${featured.id}" data-admin-only title="Cambiar foto">📷</button>`;
 
   el.innerHTML = `
     <div class="home-news-card">
