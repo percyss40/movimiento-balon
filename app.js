@@ -216,7 +216,7 @@ let pendingDraw = null;
 let calendarYear = new Date().getFullYear();
 let selectedCalendarDate = null;
 let selectedRankingYear = String(new Date().getFullYear());
-let selectedPairsSeason = "2025";
+let selectedPairsSeason = String(new Date().getFullYear());
 let selectedPlayerPairSeason = String(new Date().getFullYear());
 let selectedRivalrySeason = String(new Date().getFullYear());
 let selectedAwardsSeason = String(new Date().getFullYear());
@@ -554,6 +554,7 @@ function withImportedData(loaded) {
     match.teamB = cleanPlayerIds(match.teamB || []);
     match.scorers = cleanPlayerIds(match.scorers || []);
     match.mvp = removedPlayerIds.has(normalizePlayerId(match.mvp)) ? "" : normalizePlayerId(match.mvp || "");
+    match.goalOfMatch = removedPlayerIds.has(normalizePlayerId(match.goalOfMatch)) ? "" : normalizePlayerId(match.goalOfMatch || "");
     match.assisters = [];
   });
   return loaded;
@@ -570,7 +571,7 @@ function rating(player) {
 
 function playerStats(matches = state.matches) {
   const stats = Object.fromEntries(state.players.map((p) => [p.id, {
-    played: 0, wins: 0, draws: 0, losses: 0, goals: 0, mvp: 0, points: 0,
+    played: 0, wins: 0, draws: 0, losses: 0, goals: 0, mvp: 0, golDelPartido: 0, points: 0,
     streak: "Sin partidos", last: []
   }]));
 
@@ -593,6 +594,7 @@ function playerStats(matches = state.matches) {
     match.teamB.forEach((id) => apply(id, "B"));
     match.scorers.forEach((id) => stats[id] && (stats[id].goals += 1));
     if (stats[match.mvp]) stats[match.mvp].mvp += 1;
+    if (stats[match.goalOfMatch]) stats[match.goalOfMatch].golDelPartido += 1;
   });
 
   Object.values(stats).forEach((s) => {
@@ -655,7 +657,7 @@ function renderSeasonProgress(stats) {
 }
 
 // ===== TABLA DE TEMPORADA =====
-let selectedTablaYear = "all";
+let selectedTablaYear = String(new Date().getFullYear());
 
 function renderTablaYearOptions() {
   const select = document.getElementById("tabla-year");
@@ -1091,6 +1093,7 @@ function matchRow(m) {
       <div class="match-highlights">
         <span class="modal-pill">Goleadores: ${scorerSummaryText(m.scorers)}</span>
         <span class="modal-pill">MVP: ${byId(m.mvp)?.nickname || "-"}</span>
+        ${m.goalOfMatch ? `<span class="modal-pill">⭐ ${byId(m.goalOfMatch)?.nickname || "—"}</span>` : ""}
       </div>
       ${m.comment ? `<p>${m.comment}</p>` : ""}
       <div class="match-actions" data-admin-only>
@@ -1129,7 +1132,7 @@ function renderRankings() {
   const stats = playerStats(matches);
   const rows = state.players.map((p) => ({ p, s: stats[p.id], rating: rating(p), streakScore: streakScore(stats[p.id].streak) }));
   const boards = [
-    ["Goleadores", "goals"], ["MVP", "mvp"], ["Victorias", "wins"],
+    ["Goleadores", "goals"], ["MVP", "mvp"], ["Gol del partido", "golDelPartido"], ["Victorias", "wins"],
     ["Win rate", "winRate", "%", "winRate"], ["Puntos", "points", "", "points"], ["Puntos por partido", "pointsAvg"],
     ["Partidos jugados", "played"], ["Rachas", "streak", "", "streakScore"], ["Promedio goles", "goalAvg"], ["Media", "rating"]
   ];
@@ -1176,7 +1179,7 @@ function renderSeasonOptions(id, selected) {
 function renderPairsSeasonOptions() {
   const select = $("pairs-season");
   const years = rankingYears();
-  if (!years.includes(selectedPairsSeason) && selectedPairsSeason !== "all") selectedPairsSeason = years.includes("2025") ? "2025" : years[0] || "all";
+  if (!years.includes(selectedPairsSeason) && selectedPairsSeason !== "all") selectedPairsSeason = years[0] || "all";
   select.innerHTML = [
     ...years.map((year) => `<option value="${year}"${selectedPairsSeason === year ? " selected" : ""}>${year}</option>`),
     `<option value="all"${selectedPairsSeason === "all" ? " selected" : ""}>Todas</option>`
@@ -1315,6 +1318,7 @@ function calendarMatchDetail(match) {
         <div class="modal-stat-line">${scorerPills(match.scorers)}</div>
         <p><strong>MVP</strong></p>
         <div class="modal-stat-line"><span class="modal-pill">${byId(match.mvp)?.nickname || "Sin MVP"}</span></div>
+        ${match.goalOfMatch ? `<p><strong>⭐ Gol del partido</strong></p><div class="modal-stat-line"><span class="modal-pill">${byId(match.goalOfMatch)?.nickname || "—"}</span></div>` : ""}
       </div>
     </section>
   `;
@@ -1696,6 +1700,7 @@ function playerDetail(player) {
         <article><span>Partidos</span><strong>${stats.played}</strong></article>
         <article><span>Win rate</span><strong>${stats.winRate}%</strong></article>
         <article><span>Puntos</span><strong>${stats.points}</strong></article>
+        ${stats.golDelPartido ? `<article><span>⭐ Gol del partido</span><strong>${stats.golDelPartido}</strong></article>` : ""}
       </div>
       ${positionRows.length ? `
         <div class="position-rating-grid">
@@ -2274,6 +2279,7 @@ function renderSelects() {
   const options = state.players.map((p) => `<option value="${p.id}">${p.nickname} (${playerPositionSummary(p)})</option>`).join("");
   ["team-a", "team-b"].forEach((id) => $(id).innerHTML = options);
   $("mvp").innerHTML = `<option value="">Sin MVP</option>${options}`;
+  $("goal-of-match").innerHTML = `<option value="">Sin gol del partido</option>${options}`;
   renderMatchPlayerPicker();
   renderGoalPlayerPicker();
 }
@@ -2529,6 +2535,7 @@ window.editMatch = (id) => {
   $("venue").value = m.venue;
   $("match-outcome").value = m.scoreA > m.scoreB ? "A" : m.scoreB > m.scoreA ? "B" : "draw";
   $("mvp").value = m.mvp;
+  $("goal-of-match").value = m.goalOfMatch || "";
   $("newsText").value = m.newsText || "";
   $("comment").value = m.comment;
   setMulti("team-a", m.teamA);
@@ -2697,6 +2704,7 @@ $("new-match").addEventListener("click", () => {
   $("match-form").reset();
   $("match-id").value = "";
   $("match-date").value = today();
+  $("goal-of-match").value = "";
   setMulti("team-a", []);
   setMulti("team-b", []);
   $("scorers").value = "";
@@ -2721,6 +2729,7 @@ $("match-form").addEventListener("submit", (event) => {
     scorers: parsePlayerList($("scorers").value),
     assisters: [],
     mvp: $("mvp").value,
+    goalOfMatch: $("goal-of-match").value,
     newsText: $("newsText").value.trim(),
     comment: $("comment").value.trim()
   };
