@@ -58,7 +58,7 @@ const playerPhotoMap = {
   "player-zapana-daniel": "assets/players/zapana-daniel.jpeg"
 };
 const mvpNewsPhotoMap = {
-  "player-perez-lezcano-francisco": "FOTOS%20MVP/FRANCISCO%20PEREZ%20LEZCANO%20MVP.png"
+  "player-perez-lezcano-francisco": "assets/mvp/perez-lezcano-francisco.png"
 };
 
 const mvpDefaultNewsText = {
