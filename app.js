@@ -925,13 +925,14 @@ function renderTopScorer() {
   const seasonMatches = state.matches.filter(m => m.date.startsWith(year));
   const goals = {};
   seasonMatches.forEach(m => m.scorers.forEach(id => { goals[id] = (goals[id] || 0) + 1; }));
-  const ranked = Object.entries(goals).sort((a, b) => b[1] - a[1]);
+  const ranked = Object.entries(goals)
+    .sort((a, b) => b[1] - a[1])
+    .filter(([id]) => byId(id));
 
   if (!ranked.length) { el.innerHTML = ""; return; }
 
   const [playerId, goalCount] = ranked[0];
   const player = byId(playerId);
-  if (!player) { el.innerHTML = ""; return; }
 
   const photo = player.featurePhoto || playerPhotoMap[playerId];
   const adminBtn = isAdmin()
