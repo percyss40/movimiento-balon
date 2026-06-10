@@ -58,7 +58,11 @@ const playerPhotoMap = {
   "player-zapana-daniel": "assets/players/zapana-daniel.jpeg"
 };
 const mvpNewsPhotoMap = {
-  "player-perez-lezcano-francisco": "FOTOS MVP/FRANCISCO PEREZ LEZCANO MVP.png"
+  "player-perez-lezcano-francisco": "FOTOS%20MVP/FRANCISCO%20PEREZ%20LEZCANO%20MVP.png"
+};
+
+const mvpDefaultNewsText = {
+  "player-perez-lezcano-francisco": "Fran se lleva el MVP tras lograr el batacazo en un gran partido en el que metió 5 goles e hizo ganar a \"la cara de la derrota\" en un partido que parecía desequilibrado a favor del equipo blanco."
 };
 
 const playerPhotoFocusMap = {
@@ -147,7 +151,7 @@ const importedMatches2025Clausura = [
   {"id":"match-2025-09-28","date":"2025-09-28","venue":"Brown","teamA":[],"teamB":["player-rodri","player-sena-ian","player-cardozo-manuel","player-perez-lezcano-francisco","player-zapana-daniel","player-yavorski-javier","player-conil-nahuel","player-schneider-agustin","player-boichuk-franco","player-bustos-franco","player-memler-sebastian","player-chesani-luciano"],"scoreA":0,"scoreB":0,"scorers":["player-sena-ian","player-cardozo-manuel","player-schneider-agustin","player-schneider-agustin","player-bustos-franco","player-bustos-franco","player-bustos-franco","player-bustos-franco","player-perez-lezcano-francisco","player-perez-lezcano-francisco","player-yavorski-javier","player-yavorski-javier","player-yavorski-javier"],"assisters":[],"mvp":"player-bustos-franco","comment":""},
   {"id":"match-2025-10-05","date":"2025-10-05","venue":"Brown","teamA":["player-chino","player-panozzo-emiliano","player-martinez-alejandro","player-boichuk-franco","player-cortez-joaquin","player-chesani-luciano","player-memler-sebastian"],"teamB":["player-perez-lezcano-francisco","player-schneider-agustin","player-cardozo-manuel","player-zapana-daniel"],"scoreA":1,"scoreB":0,"scorers":["player-panozzo-emiliano","player-perez-lezcano-francisco","player-chino","player-chino","player-cortez-joaquin","player-cortez-joaquin","player-cortez-joaquin","player-cortez-joaquin"],"assisters":[],"mvp":"player-cortez-joaquin","comment":""},
   {"id":"match-2025-10-12","date":"2025-10-12","venue":"Brown","teamA":["player-cardozo-manuel","player-perez-lezcano-francisco","player-conil-nahuel","player-romero-lucas","player-bustos-franco","player-chesani-luciano","player-memler-sebastian"],"teamB":["player-schneider-agustin","player-chino","player-pereyra-gabriel","player-cortez-joaquin","player-zapana-daniel"],"scoreA":1,"scoreB":0,"scorers":["player-memler-sebastian","player-memler-sebastian","player-bustos-franco","player-romero-lucas","player-romero-lucas","player-perez-lezcano-francisco","player-perez-lezcano-francisco","player-chino","player-cortez-joaquin","player-cortez-joaquin","player-chesani-luciano","player-chesani-luciano","player-pereyra-gabriel"],"assisters":[],"mvp":"player-chesani-luciano","comment":""},
-  {"id":"match-2025-10-19","date":"2025-10-19","venue":"Brown","teamA":["player-zapana-daniel","player-panozzo-emiliano","player-yavorski-javier","player-schneider-agustin","player-bustos-franco","player-chesani-luciano","player-memler-sebastian"],"teamB":["player-geslao-gaston","player-romero-lucas","player-perez-lezcano-francisco","player-pereyra-gabriel","player-cortez-joaquin"],"scoreA":1,"scoreB":0,"scorers":["player-memler-sebastian","player-memler-sebastian","player-bustos-franco","player-romero-lucas","player-romero-lucas","player-perez-lezcano-francisco","player-perez-lezcano-francisco","player-chino","player-cortez-joaquin","player-cortez-joaquin","player-chesani-luciano","player-chesani-luciano","player-pereyra-gabriel"],"assisters":[],"mvp":"player-perez-lezcano-francisco","newsText":"Fran se lleva el MVP tras lograr el batacazo en un gran partido en el que metió 5 goles e hizo ganar a \"la cara de la derrota\" en un partido que parecía desequilibrado a favor del equipo blanco.","comment":""},
+  {"id":"match-2025-10-19","date":"2025-10-19","venue":"Brown","teamA":["player-zapana-daniel","player-panozzo-emiliano","player-yavorski-javier","player-schneider-agustin","player-bustos-franco","player-chesani-luciano","player-memler-sebastian"],"teamB":["player-geslao-gaston","player-romero-lucas","player-perez-lezcano-francisco","player-pereyra-gabriel","player-cortez-joaquin"],"scoreA":1,"scoreB":0,"scorers":["player-memler-sebastian","player-memler-sebastian","player-bustos-franco","player-romero-lucas","player-romero-lucas","player-perez-lezcano-francisco","player-perez-lezcano-francisco","player-chino","player-cortez-joaquin","player-cortez-joaquin","player-chesani-luciano","player-chesani-luciano","player-pereyra-gabriel"],"assisters":[],"mvp":"player-perez-lezcano-francisco","comment":""},
   {"id":"match-2025-11-02","date":"2025-11-02","venue":"Brown","teamA":[],"teamB":["player-cardozo-manuel","player-perez-lezcano-francisco","player-chino","player-zapana-daniel","player-pereyra-gabriel","player-panozzo-emiliano","player-martinez-alejandro","player-yavorski-javier","player-conil-nahuel","player-boichuk-franco","player-cortez-joaquin","player-chesani-luciano","player-memler-sebastian"],"scoreA":0,"scoreB":0,"scorers":["player-martinez-alejandro","player-boichuk-franco","player-cardozo-manuel","player-panozzo-emiliano","player-panozzo-emiliano","player-panozzo-emiliano","player-panozzo-emiliano","player-memler-sebastian","player-perez-lezcano-francisco","player-perez-lezcano-francisco","player-chino","player-chino","player-pereyra-gabriel","player-pereyra-gabriel","player-pereyra-gabriel","player-yavorski-javier","player-yavorski-javier","player-yavorski-javier","player-yavorski-javier"],"assisters":[],"mvp":"player-panozzo-emiliano","comment":""},
   {"id":"match-2025-11-23","date":"2025-11-23","venue":"Brown","teamA":["player-sena-ian","player-zapana-daniel","player-pereyra-gabriel","player-yavorski-javier","player-bustos-franco","player-chesani-luciano"],"teamB":["player-perez-lezcano-francisco","player-panozzo-emiliano","player-cardozo-manuel","player-boichuk-franco","player-cortez-joaquin","player-memler-sebastian"],"scoreA":1,"scoreB":0,"scorers":["player-sena-ian","player-sena-ian","player-boichuk-franco","player-bustos-franco","player-cortez-joaquin","player-chesani-luciano","player-chesani-luciano","player-pereyra-gabriel","player-pereyra-gabriel","player-pereyra-gabriel","player-pereyra-gabriel"],"assisters":[],"mvp":"player-chesani-luciano","comment":""},
   {"id":"match-2025-11-30","date":"2025-11-30","venue":"Brown","teamA":[],"teamB":["player-cabrera-gonzalo","player-chemes-tomas","player-cardozo-manuel","player-chino","player-zapana-daniel","player-pereyra-gabriel","player-panozzo-emiliano","player-yavorski-javier","player-romero-lucas","player-boichuk-franco","player-cortez-joaquin","player-bustos-franco","player-chesani-luciano"],"scoreA":0,"scoreB":0,"scorers":["player-cabrera-gonzalo","player-cabrera-gonzalo","player-boichuk-franco","player-boichuk-franco","player-cardozo-manuel","player-cardozo-manuel","player-cardozo-manuel","player-bustos-franco","player-romero-lucas","player-romero-lucas","player-romero-lucas","player-chino","player-chino","player-chesani-luciano","player-chesani-luciano","player-chesani-luciano","player-pereyra-gabriel","player-pereyra-gabriel","player-yavorski-javier","player-yavorski-javier","player-yavorski-javier"],"assisters":[],"mvp":"player-chesani-luciano","comment":""}
@@ -533,6 +537,7 @@ function withImportedData(loaded) {
       if ((player[key] === undefined || player[key] === "") && basePlayer?.[key] !== undefined) player[key] = basePlayer[key];
     });
   });
+  if (!loaded.galleryUploads) loaded.galleryUploads = [];
   const importedMatchMap = Object.fromEntries(importedMatches.map((m) => [m.id, m]));
   const existingMatches = new Set(loaded.matches.map((match) => match.id));
   importedMatches.forEach((match) => {
@@ -900,7 +905,7 @@ function renderDashboard() {
 
   renderSeasonProgress(stats);
 
-  $("latest-matches").innerHTML = state.matches.slice().sort((a, b) => b.date.localeCompare(a.date)).slice(0, 5).map(matchRow).join("") || empty("Todavia no hay partidos cargados.");
+  renderTopScorer();
 
   $("featured-players").innerHTML = state.players
     .slice()
@@ -912,20 +917,81 @@ function renderDashboard() {
   renderHomeGallery();
 }
 
+function renderTopScorer() {
+  const el = document.getElementById("home-scorer");
+  if (!el) return;
+
+  const year = String(new Date().getFullYear());
+  const seasonMatches = state.matches.filter(m => m.date.startsWith(year));
+  const goals = {};
+  seasonMatches.forEach(m => m.scorers.forEach(id => { goals[id] = (goals[id] || 0) + 1; }));
+  const ranked = Object.entries(goals).sort((a, b) => b[1] - a[1]);
+
+  if (!ranked.length) { el.innerHTML = ""; return; }
+
+  const [playerId, goalCount] = ranked[0];
+  const player = byId(playerId);
+  if (!player) { el.innerHTML = ""; return; }
+
+  const photo = player.featurePhoto || playerPhotoMap[playerId];
+  const adminBtn = isAdmin()
+    ? `<button class="photo-upload-btn" data-upload-scorer-photo="${playerId}" title="Cambiar foto">📷</button>`
+    : "";
+
+  const maxGoals = ranked[0][1];
+  const listRows = ranked.slice(0, 8).map(([id, g], i) => {
+    const p = byId(id);
+    if (!p) return "";
+    const barPct = Math.round((g / maxGoals) * 100);
+    const medals = ["🥇","🥈","🥉"];
+    const pos = i < 3 ? `<span class="scorer-medal">${medals[i]}</span>` : `<span class="scorer-pos">${i + 1}</span>`;
+    return `
+      <div class="scorer-row">
+        ${pos}
+        <span class="scorer-name">${p.nickname}</span>
+        <div class="scorer-bar-wrap">
+          <div class="scorer-bar" style="width:${barPct}%"></div>
+        </div>
+        <span class="scorer-goals">${g}</span>
+      </div>`;
+  }).join("");
+
+  el.innerHTML = `
+    <div class="home-news-card home-scorer-card">
+      ${photo ? `<img class="home-news-photo" src="${photo}" alt="${player.nickname}" style="object-position:center top">` : `<div class="home-news-photo-placeholder">⚽</div>`}
+      <div class="home-news-gradient"></div>
+      ${adminBtn}
+      <div class="home-news-body">
+        <div class="home-news-badge home-scorer-badge">Goleador ${year}</div>
+        <div class="home-news-mvp-name">${player.nickname}</div>
+        <p class="home-scorer-stat">${goalCount} goles en la temporada</p>
+      </div>
+    </div>
+    <div class="scorer-list">
+      <p class="scorer-list-title">Tabla de goleadores ${year}</p>
+      ${listRows}
+    </div>`;
+}
+
 function renderHomeNews() {
   const el = document.getElementById("home-news");
   if (!el) return;
 
   const sorted = state.matches.slice().sort((a, b) => b.date.localeCompare(a.date));
-  const featured = sorted.find(m => m.newsText && m.newsText.trim());
+  const featured = sorted.find(m => m.newsText && m.newsText.trim())
+    || sorted.find(m => m.mvp);
 
   if (!featured) { el.innerHTML = ""; return; }
 
-  const photo = featured.mvp ? mvpNewsPhotoMap[featured.mvp] : null;
+  const photo = featured.newsPhoto || (featured.mvp ? (mvpNewsPhotoMap[featured.mvp] || playerPhotoMap[featured.mvp]) : null);
   const player = featured.mvp ? byId(featured.mvp) : null;
+  const newsText = featured.newsText || (featured.mvp ? mvpDefaultNewsText[featured.mvp] : null) || "";
   const meses = ["Ene","Feb","Mar","Abr","May","Jun","Jul","Ago","Sep","Oct","Nov","Dic"];
   const [y, mo, day] = featured.date.split("-");
   const dateLabel = `${day} ${meses[Number(mo)-1]} ${y}`;
+  const adminBtn = isAdmin()
+    ? `<button class="photo-upload-btn" data-upload-news-photo="${featured.id}" title="Cambiar foto">📷</button>`
+    : "";
 
   el.innerHTML = `
     <div class="home-news-card">
@@ -934,9 +1000,10 @@ function renderHomeNews() {
         : `<div class="home-news-photo-placeholder">⚽</div>`
       }
       <div class="home-news-gradient"></div>
+      ${adminBtn}
       <div class="home-news-body">
         <div class="home-news-badge">MVP · ${dateLabel}</div>
-        <p class="home-news-text">${featured.newsText}</p>
+        <p class="home-news-text">${newsText}</p>
         ${player ? `<div class="home-news-mvp-name">${player.nickname}</div>` : ""}
       </div>
     </div>`;
@@ -1956,7 +2023,8 @@ function renderAwards() {
 }
 
 function renderGallery() {
-  $("gallery-grid").innerHTML = galleryImages.map((src, index) => `
+  const allImages = [...(state.galleryUploads || []), ...galleryImages];
+  $("gallery-grid").innerHTML = allImages.map((src, index) => `
     <figure class="gallery-item">
       <img src="${src}" alt="Foto de Movimiento Balon ${index + 1}" loading="lazy" data-lightbox-src="${src}">
     </figure>
@@ -2865,6 +2933,56 @@ bindIfExists("paste-resolver-modal", "click", (e) => {
 });
 $("player-gallery-file").addEventListener("change", async (event) => {
   await addPlayerGalleryFiles(event.target.files);
+  event.target.value = "";
+});
+
+// News photo upload
+let pendingNewsPhotoMatchId = "";
+document.addEventListener("click", (event) => {
+  const btn = event.target.closest("[data-upload-news-photo]");
+  if (!btn || !isAdmin()) return;
+  pendingNewsPhotoMatchId = btn.dataset.uploadNewsPhoto;
+  $("news-photo-file").click();
+});
+$("news-photo-file").addEventListener("change", async (event) => {
+  const file = event.target.files[0];
+  if (!file || !pendingNewsPhotoMatchId) return;
+  const [base64] = await readGalleryFiles([file]);
+  const match = state.matches.find(m => m.id === pendingNewsPhotoMatchId);
+  if (match) { match.newsPhoto = base64; saveState(); renderDashboard(); }
+  event.target.value = "";
+});
+
+// Scorer photo upload
+let pendingScorerPhotoId = "";
+document.addEventListener("click", (event) => {
+  const btn = event.target.closest("[data-upload-scorer-photo]");
+  if (!btn || !isAdmin()) return;
+  pendingScorerPhotoId = btn.dataset.uploadScorerPhoto;
+  $("scorer-photo-file").click();
+});
+$("scorer-photo-file").addEventListener("change", async (event) => {
+  const file = event.target.files[0];
+  if (!file || !pendingScorerPhotoId) return;
+  const [base64] = await readGalleryFiles([file]);
+  const player = byId(pendingScorerPhotoId);
+  if (player) { player.featurePhoto = base64; saveState(); renderTopScorer(); }
+  event.target.value = "";
+});
+
+// Gallery upload
+$("gallery-upload-btn").addEventListener("click", () => {
+  if (!requireAdmin()) return;
+  $("gallery-upload-file").click();
+});
+$("gallery-upload-file").addEventListener("change", async (event) => {
+  const files = event.target.files;
+  if (!files?.length) return;
+  const images = await readGalleryFiles(files);
+  if (!state.galleryUploads) state.galleryUploads = [];
+  state.galleryUploads.unshift(...images);
+  saveState();
+  renderGallery();
   event.target.value = "";
 });
 document.addEventListener("click", (event) => {

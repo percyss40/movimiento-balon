@@ -87,8 +87,7 @@
         <div class="stat-grid" id="dashboard-stats"></div>
         <div class="two-col">
           <div>
-            <h3>Ultimos partidos</h3>
-            <div id="latest-matches" class="list"></div>
+            <div id="home-scorer"></div>
           </div>
           <div>
             <div id="home-news"></div>
@@ -333,6 +332,7 @@
             <p class="eyebrow">Archivo visual</p>
             <h2>Galeria</h2>
           </div>
+          <button class="primary" id="gallery-upload-btn" type="button" data-admin-only>Subir fotos</button>
         </div>
         <div id="gallery-grid" class="gallery-grid"></div>
       </section>
@@ -425,6 +425,9 @@
     </div>
 
     <input class="hidden" id="player-gallery-file" type="file" accept="image/*" multiple>
+    <input class="hidden" id="news-photo-file" type="file" accept="image/*">
+    <input class="hidden" id="scorer-photo-file" type="file" accept="image/*">
+    <input class="hidden" id="gallery-upload-file" type="file" accept="image/*" multiple>
 
     <footer class="site-footer">
       <p>⚽ <strong>Movimiento Balon</strong> · Dictadura Chemista · Brown, Argentina</p>
