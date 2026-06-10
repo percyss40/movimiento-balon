@@ -544,14 +544,11 @@ function withImportedData(loaded) {
     });
   });
   if (!loaded.galleryUploads) loaded.galleryUploads = [];
-  const importedMatchMap = Object.fromEntries(importedMatches.map((m) => [m.id, m]));
   const existingMatches = new Set(loaded.matches.map((match) => match.id));
   importedMatches.forEach((match) => {
     if (!existingMatches.has(match.id)) loaded.matches.push({ ...match, comment: "", assisters: [] });
   });
   loaded.matches.forEach((match) => {
-    const src = importedMatchMap[match.id];
-    if (src?.newsText && !match.newsText) match.newsText = src.newsText;
     if (match.comment && match.comment.startsWith("Migrado desde")) match.comment = "";
     match.teamA = cleanPlayerIds(match.teamA || []);
     match.teamB = cleanPlayerIds(match.teamB || []);
