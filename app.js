@@ -1818,6 +1818,25 @@ function readGalleryFiles(files) {
   })));
 }
 
+function compressImage(file, maxWidth = 800, quality = 0.82) {
+  return new Promise((resolve) => {
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      const img = new Image();
+      img.onload = () => {
+        const scale = Math.min(1, maxWidth / img.width);
+        const canvas = document.createElement("canvas");
+        canvas.width = Math.round(img.width * scale);
+        canvas.height = Math.round(img.height * scale);
+        canvas.getContext("2d").drawImage(img, 0, 0, canvas.width, canvas.height);
+        resolve(canvas.toDataURL("image/jpeg", quality));
+      };
+      img.src = e.target.result;
+    };
+    reader.readAsDataURL(file);
+  });
+}
+
 async function addPlayerGalleryFiles(files) {
   if (!pendingGalleryPlayerId || !files?.length) return;
   const player = byId(pendingGalleryPlayerId);
@@ -2951,9 +2970,11 @@ document.addEventListener("click", (event) => {
 bindIfExists("news-photo-file", "change", async (event) => {
   const file = event.target.files[0];
   if (!file || !pendingNewsPhotoMatchId) return;
-  const [base64] = await readGalleryFiles([file]);
-  const match = state.matches.find(m => m.id === pendingNewsPhotoMatchId);
-  if (match) { match.newsPhoto = base64; saveState(); renderDashboard(); }
+  try {
+    const base64 = await compressImage(file);
+    const match = state.matches.find(m => m.id === pendingNewsPhotoMatchId);
+    if (match) { match.newsPhoto = base64; saveState(); renderDashboard(); }
+  } catch(e) { console.error("Error subiendo foto de noticia:", e); }
   event.target.value = "";
 });
 
@@ -2968,9 +2989,11 @@ document.addEventListener("click", (event) => {
 bindIfExists("scorer-photo-file", "change", async (event) => {
   const file = event.target.files[0];
   if (!file || !pendingScorerPhotoId) return;
-  const [base64] = await readGalleryFiles([file]);
-  const player = byId(pendingScorerPhotoId);
-  if (player) { player.featurePhoto = base64; saveState(); renderTopScorer(); }
+  try {
+    const base64 = await compressImage(file);
+    const player = byId(pendingScorerPhotoId);
+    if (player) { player.featurePhoto = base64; saveState(); renderTopScorer(); }
+  } catch(e) { console.error("Error subiendo foto del goleador:", e); }
   event.target.value = "";
 });
 
