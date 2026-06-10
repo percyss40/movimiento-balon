@@ -39,7 +39,7 @@ const playerPhotoMap = {
   "player-cardozo-manuel": "assets/players/cardozo-manuel.png",
   "player-chemes-tomas": "assets/players/chemes-tomas.png",
   "player-chesani-luciano": "assets/players/chesani-luciano.png",
-  "player-chino": "assets/players/chino.png",
+  "player-chino": "assets/players/chino-v2.png",
   "player-conil-nahuel": "assets/players/conil-nahuel.png",
   "player-cortez-joaquin": "assets/players/cortez-joaquin.png",
   "player-delpiano-carlos": "assets/players/delpiano-carlos.png",
