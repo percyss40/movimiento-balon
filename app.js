@@ -889,7 +889,9 @@ function renderAll() {
 }
 
 function renderDashboard() {
-  const stats = playerStats();
+  const year = String(new Date().getFullYear());
+  const seasonMatches = state.matches.filter(m => m.date.startsWith(year));
+  const stats = playerStats(seasonMatches);
   const totalGoals = state.matches.reduce((sum, m) => sum + m.scorers.length, 0);
   $("dashboard-stats").innerHTML = [
     ["Jugadores", state.players.length],
