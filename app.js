@@ -2943,9 +2943,9 @@ document.addEventListener("click", (event) => {
   const btn = event.target.closest("[data-upload-news-photo]");
   if (!btn || !isAdmin()) return;
   pendingNewsPhotoMatchId = btn.dataset.uploadNewsPhoto;
-  $("news-photo-file").click();
+  $("news-photo-file")?.click();
 });
-$("news-photo-file").addEventListener("change", async (event) => {
+bindIfExists("news-photo-file", "change", async (event) => {
   const file = event.target.files[0];
   if (!file || !pendingNewsPhotoMatchId) return;
   const [base64] = await readGalleryFiles([file]);
@@ -2960,9 +2960,9 @@ document.addEventListener("click", (event) => {
   const btn = event.target.closest("[data-upload-scorer-photo]");
   if (!btn || !isAdmin()) return;
   pendingScorerPhotoId = btn.dataset.uploadScorerPhoto;
-  $("scorer-photo-file").click();
+  $("scorer-photo-file")?.click();
 });
-$("scorer-photo-file").addEventListener("change", async (event) => {
+bindIfExists("scorer-photo-file", "change", async (event) => {
   const file = event.target.files[0];
   if (!file || !pendingScorerPhotoId) return;
   const [base64] = await readGalleryFiles([file]);
@@ -2972,11 +2972,11 @@ $("scorer-photo-file").addEventListener("change", async (event) => {
 });
 
 // Gallery upload
-$("gallery-upload-btn").addEventListener("click", () => {
+bindIfExists("gallery-upload-btn", "click", () => {
   if (!requireAdmin()) return;
-  $("gallery-upload-file").click();
+  $("gallery-upload-file")?.click();
 });
-$("gallery-upload-file").addEventListener("change", async (event) => {
+bindIfExists("gallery-upload-file", "change", async (event) => {
   const files = event.target.files;
   if (!files?.length) return;
   const images = await readGalleryFiles(files);
