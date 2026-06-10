@@ -2736,6 +2736,7 @@ $("match-form").addEventListener("submit", (event) => {
   state.matches = state.matches.filter((m) => m.id !== id).concat(match);
   $("match-form").classList.add("hidden");
   renderAll();
+  saveToCloud({ quiet: true });
 });
 
 $("match-player-picker").addEventListener("click", (event) => {
