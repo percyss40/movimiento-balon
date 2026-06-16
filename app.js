@@ -701,9 +701,13 @@ function renderTabla() {
       <tbody>
         ${rows.map(({ p, s }, i) => {
           const form = s.last.slice(-5).map((r) => `<span class="form-pill ${r}">${r}</span>`).join("");
+          const maxPts = rows[0]?.s.points || 1;
+          const pct = Math.round((s.points / maxPts) * 100);
+          const podiumClass = i === 0 ? "rank-gold" : i === 1 ? "rank-silver" : i === 2 ? "rank-bronze" : "";
+          const posClass = i === 0 ? "rank-gold-pos" : i === 1 ? "rank-silver-pos" : i === 2 ? "rank-bronze-pos" : "";
           return `
-            <tr>
-              <td><span class="standings-pos ${i < 3 ? "top3" : ""}">${i + 1}</span></td>
+            <tr class="${podiumClass}">
+              <td><span class="standings-pos ${posClass}">${i + 1}</span></td>
               <td><strong>${p.nickname}</strong></td>
               <td>${s.played}</td>
               <td>${s.wins}</td>
@@ -711,7 +715,12 @@ function renderTabla() {
               <td>${s.losses}</td>
               <td>${s.goals}</td>
               <td><div class="standings-form">${form}</div></td>
-              <td><strong class="standings-pts">${s.points}</strong></td>
+              <td>
+                <div class="standings-pts-wrap">
+                  <strong class="standings-pts">${s.points}</strong>
+                  <div class="standings-pts-bar"><div class="standings-pts-bar-fill" style="width:${pct}%"></div></div>
+                </div>
+              </td>
             </tr>`;
         }).join("")}
       </tbody>
@@ -918,7 +927,21 @@ function renderDashboard() {
     .slice()
     .sort((a, b) => (stats[b.id]?.points || 0) - (stats[a.id]?.points || 0))
     .slice(0, 5)
-    .map((p) => `<div class="mini-row"><strong>${p.nickname}</strong><span>${stats[p.id].points} pts | ${stats[p.id].goals} goles</span></div>`)
+    .map((p) => {
+      const photo = playerPhotoMap[p.id];
+      const focus = playerPhotoFocusMap[p.id] || "center 20%";
+      const avatarHtml = photo
+        ? `<img src="${photo}" alt="${p.nickname}" style="object-position:${focus}">`
+        : p.nickname[0];
+      return `<div class="featured-player-row">
+        <div class="featured-player-avatar">${avatarHtml}</div>
+        <div>
+          <div class="featured-player-name">${p.nickname}</div>
+          <div class="muted" style="font-size:.78rem;margin-top:2px">${stats[p.id].wins}V · ${stats[p.id].goals}G</div>
+        </div>
+        <span class="featured-player-pts">${stats[p.id].points}</span>
+      </div>`;
+    })
     .join("") || empty("Cargá jugadores para ver destacados.");
   renderHomeNews();
   renderHomeGallery();
