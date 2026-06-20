@@ -2862,6 +2862,48 @@ $("generate-teams").addEventListener("click", generateTeams);
 $("confirmed-list").addEventListener("change", (event) => {
   if (event.target.matches("input[type='checkbox']")) enforceDrawLimit(event.target);
 });
+
+$("draw-paste-toggle").addEventListener("click", () => {
+  $("draw-paste-box").classList.toggle("hidden");
+});
+
+$("draw-paste-clear").addEventListener("click", () => {
+  document.querySelectorAll("#confirmed-list input:checked").forEach((cb) => { cb.checked = false; });
+  updateDrawCounter();
+});
+
+$("draw-paste-apply").addEventListener("click", () => {
+  const text = $("draw-paste-input").value;
+  const lines = text.split(/\n/).map((l) => l.trim()).filter(Boolean);
+  const unresolved = [];
+  const toCheck = [];
+
+  lines.forEach((line) => {
+    const result = fuzzyFindPlayer(line);
+    if (result && !result.ambiguous) {
+      toCheck.push(result.player.id);
+    } else if (result && result.ambiguous) {
+      unresolved.push({ name: line, candidates: result.candidates });
+    } else {
+      unresolved.push({ name: line, candidates: [] });
+    }
+  });
+
+  document.querySelectorAll("#confirmed-list input:checked").forEach((cb) => { cb.checked = false; });
+  toCheck.forEach((id) => {
+    const cb = document.querySelector(`#confirmed-list input[value="${id}"]`);
+    if (cb) cb.checked = true;
+  });
+  updateDrawCounter();
+
+  if (unresolved.length) {
+    const names = unresolved.map((u) => `"${u.name}"`).join(", ");
+    alert(`No se reconocieron: ${names}`);
+  }
+
+  $("draw-paste-box").classList.add("hidden");
+  $("draw-paste-input").value = "";
+});
 $("ranking-year").addEventListener("change", (event) => {
   selectedRankingYear = event.target.value;
   renderRankings();

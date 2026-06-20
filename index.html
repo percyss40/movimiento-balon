@@ -290,6 +290,17 @@
           <button class="primary" id="generate-teams">Generar equipos</button>
         </div>
         <p class="hint">Elegis hasta 14 confirmados. La app prioriza media pareja, reparto por niveles, arqueros repartidos, figuras 88+ separadas y goles por partido similares.</p>
+        <div class="paste-list-area">
+          <button class="paste-list-toggle ghost dark" type="button" id="draw-paste-toggle">📋 Pegar lista de jugadores</button>
+          <div id="draw-paste-box" class="hidden">
+            <p class="muted" style="margin:8px 0 6px">Pegá los nombres, uno por línea. Se van a marcar automáticamente los que se reconozcan.</p>
+            <textarea id="draw-paste-input" rows="6" placeholder="Tomi&#10;Chino&#10;Lolo&#10;Mosqui&#10;Javi&#10;Pola"></textarea>
+            <div class="form-actions" style="margin-top:8px">
+              <button class="primary" type="button" id="draw-paste-apply">Seleccionar jugadores</button>
+              <button class="ghost dark" type="button" id="draw-paste-clear">Limpiar selección</button>
+            </div>
+          </div>
+        </div>
         <p id="draw-counter" class="draw-counter">0/14 seleccionados</p>
         <div id="confirmed-list" class="check-grid"></div>
         <div id="draw-result" class="two-col"></div>
