@@ -119,6 +119,32 @@ const playerAttributeOverrides = {
   "player-chemes-tomas": { overall: 82, pace: 64, shooting: 82, passing: 90, dribbling: 84, defense: 84, physical: 80 },
   "player-duarte-lucas": { overall: 70, pace: 30, shooting: 90, passing: 84, dribbling: 86, defense: 60, physical: 70 }
 };
+const defaultPlayerAliases = {
+  "player-cardozo-manuel": ["manu", "manolo", "manuel"],
+  "player-memler-sebastian": ["trifinger", "frifinger", "seba", "memler"],
+  "player-cortez-joaquin": ["joa", "cortez", "joaquin", "cono"],
+  "player-panozzo-emiliano": ["pano", "panozzo"],
+  "player-pereyra-gabriel": ["micky"],
+  "player-chino": ["oriental", "asiatico", "chino"],
+  "player-conil-nahuel": ["nahue"],
+  "player-chesani-luciano": ["lolo"],
+  "player-geslao-gaston": ["gas"],
+  "player-bustos-franco": ["mosqui"],
+  "player-romero-lucas": ["pela"],
+  "player-martinez-alejandro": ["ale"],
+  "player-schneider-agustin": ["pola"],
+  "player-jp": ["juan", "pablo", "martinez"],
+  "player-yavorski-javier": ["yabier", "yavier", "javi"],
+  "player-delpiano-carlos": ["carlos", "carlitos", "carlinhos"],
+  "player-rodri": ["rodri"],
+  "player-perez-lezcano-francisco": ["fran"],
+  "player-fernandez-harry-guillermo": ["harry"],
+  "player-boichuk-franco": ["franquito", "cm", "boichuk"],
+  "player-cabrera-gabriel": ["picante", "el picante"],
+  "player-chemes-tomas": ["tomi", "chemes"],
+  "player-duarte-lucas": ["ld"],
+  "player-zapana-daniel": ["zapa", "zapana"]
+};
 const galleryImages = Array.from({ length: 38 }, (_, index) => `assets/gallery/gallery-${String(index + 1).padStart(2, "0")}.jpeg`);
 let gallerySlideIndex = 0;
 let galleryTimer = null;
@@ -528,6 +554,7 @@ function withImportedData(loaded) {
     if (playerPhotoMap[player.id] || (!player.photo && basePlayer?.photo)) player.photo = playerPhotoMap[player.id] || basePlayer.photo;
     if (playerPhotoFocusMap[player.id]) player.photoFocus = playerPhotoFocusMap[player.id];
     if (!["normal", "legend"].includes(player.cardStyle)) player.cardStyle = "normal";
+    if (!player.aliases) player.aliases = defaultPlayerAliases[player.id] || [];
     player.gallery = normalizeGalleryList(player.gallery);
     if (player.position === "Comodin") player.position = "Jugador";
     if (goalkeeperIds.includes(player.id)) {
@@ -1429,6 +1456,40 @@ function bestTeamSplit(players) {
   return best || fallbackTeamSplit(players);
 }
 
+function togetherHistoryPenalty(teamA, teamB) {
+  const recent = [...state.matches].sort((a, b) => b.date.localeCompare(a.date)).slice(0, 10);
+  const ids = [...teamA, ...teamB].map((p) => p.id);
+  const participation = {};
+  const together = {};
+  ids.forEach((id) => { participation[id] = 0; });
+  recent.forEach((m) => {
+    [m.teamA, m.teamB].forEach((team) => {
+      const relevant = ids.filter((id) => team.includes(id));
+      relevant.forEach((id) => participation[id]++);
+      for (let i = 0; i < relevant.length; i++) {
+        for (let j = i + 1; j < relevant.length; j++) {
+          const key = [relevant[i], relevant[j]].sort().join("|");
+          together[key] = (together[key] || 0) + 1;
+        }
+      }
+    });
+  });
+  let penalty = 0;
+  [teamA, teamB].forEach((team) => {
+    const teamIds = team.map((p) => p.id);
+    for (let i = 0; i < teamIds.length; i++) {
+      for (let j = i + 1; j < teamIds.length; j++) {
+        const a = teamIds[i], b = teamIds[j];
+        const key = [a, b].sort().join("|");
+        const togetherCount = together[key] || 0;
+        const minParticipation = Math.min(participation[a] || 0, participation[b] || 0);
+        penalty += togetherCount * (minParticipation / 10) * 10;
+      }
+    }
+  });
+  return penalty;
+}
+
 function splitScore(teamA, teamB, stats, keeperTotal) {
   const ratingA = adjustedTeamDrawMedia(teamA, keeperTotal);
   const ratingB = adjustedTeamDrawMedia(teamB, keeperTotal);
@@ -1444,7 +1505,8 @@ function splitScore(teamA, teamB, stats, keeperTotal) {
   const neighborPenalty = ratingNeighborPenalty(teamA, teamB);
   const spreadPenalty = drawSpreadPenalty(teamA, teamB);
   const separatePairPenalty = drawSeparatePairPenalty(teamA, teamB);
-  return ratingDiff * 25 + goalDiff * 30 + keeperPenalty + positionPenalty + elitePenalty + lowRatingPenalty + tierPenalty + neighborPenalty + spreadPenalty + separatePairPenalty;
+  const togetherPenalty = togetherHistoryPenalty(teamA, teamB);
+  return ratingDiff * 25 + goalDiff * 30 + keeperPenalty + positionPenalty + elitePenalty + lowRatingPenalty + tierPenalty + neighborPenalty + spreadPenalty + separatePairPenalty + togetherPenalty;
 }
 
 function adjustedTeamMedia(team, keeperTotal) {
@@ -2538,6 +2600,7 @@ window.editPlayer = (id) => {
   $("positionPrimary").value = playerPositions(p)[0] || "midfielder";
   $("positionSecondary").value = playerPositions(p)[1] || "";
   $("applySuggestedRating").checked = false;
+  $("playerAliases").value = (p.aliases || []).join("\n");
   $("playerGallery").value = normalizeGalleryList(p.gallery).join("\n");
   updatePositionRatingSummary();
   revealPlayerForm();
@@ -2704,6 +2767,7 @@ $("player-form").addEventListener("submit", (event) => {
     positionSecondary: secondary,
     foot: $("foot").value,
     photo: $("photo").value.trim(),
+    aliases: $("playerAliases").value.split("\n").map((s) => s.trim()).filter(Boolean),
     gallery: normalizeGalleryList($("playerGallery").value),
     cardStyle: $("cardStyle").value,
     overall: Number($("overall").value),
@@ -2864,11 +2928,16 @@ function fuzzyFindPlayer(name) {
   const matches = state.players.filter((p) => {
     const nickNorm = normalizeForMatch(p.nickname);
     if (nickNorm === norm) return true;
-    const nickWords = nickNorm.split(/\s+/);
+    const aliases = (p.aliases || []).map(normalizeForMatch);
+    if (aliases.includes(norm)) return true;
+    const allTerms = [nickNorm, ...aliases];
     const searchWords = norm.split(/\s+/);
-    return searchWords.some((sw) =>
-      nickWords.some((nw) => nw === sw || (sw.length >= 3 && (nw.startsWith(sw) || sw.startsWith(nw))))
-    );
+    return allTerms.some((term) => {
+      const termWords = term.split(/\s+/);
+      return searchWords.some((sw) =>
+        termWords.some((nw) => nw === sw || (sw.length >= 3 && (nw.startsWith(sw) || sw.startsWith(nw))))
+      );
+    });
   });
   if (matches.length === 1) return { player: matches[0], ambiguous: false };
   if (matches.length > 1) return { player: matches[0], ambiguous: true, candidates: matches };
