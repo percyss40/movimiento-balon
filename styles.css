@@ -1401,6 +1401,20 @@ input:focus, select:focus, textarea:focus {
   margin-top: 4px;
 }
 
+.admin-draw-view {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin-top: 24px;
+  padding-top: 20px;
+  border-top: 1px dashed var(--border);
+  opacity: 0.75;
+}
+.team-box--admin {
+  border-style: dashed;
+  opacity: 0.9;
+}
+
 /* ===== CALENDAR ===== */
 .year-controls {
   display: flex;

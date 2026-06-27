@@ -1426,10 +1426,15 @@ function renderDrawResult(keeperTotal) {
     .map((id) => byId(id)).filter((p) => p && p.position === "Arquero").length;
   const teamA = pendingDraw.teamA.map((id) => byId(id)).filter(Boolean);
   const teamB = pendingDraw.teamB.map((id) => byId(id)).filter(Boolean);
-  $("draw-result").innerHTML = [
+  const publicBoxes = [
     teamBox("Equipo Blanco", teamA, kTotal, "teamA"),
     teamBox("Equipo Negro", teamB, kTotal, "teamB")
   ].join("");
+  const adminBoxes = isAdmin() ? `<div class="admin-draw-view"><p class="eyebrow" style="grid-column:1/-1;margin:0 0 4px">Vista admin — medias internas</p>${[
+    teamBox("Equipo Blanco", teamA, kTotal, "", true),
+    teamBox("Equipo Negro", teamB, kTotal, "", true)
+  ].join("")}</div>` : "";
+  $("draw-result").innerHTML = publicBoxes + adminBoxes;
   if (isAdmin()) initDrawDragDrop();
 }
 
@@ -1762,19 +1767,18 @@ function fallbackTeamSplit(players) {
   return { teamA, teamB };
 }
 
-function teamBox(title, team, keeperTotal = 0, teamKey = "") {
-  const media = team.length ? avg(team.map(rating)) : 0;
-  const adjusted = adjustedTeamMedia(team, keeperTotal);
+function teamBox(title, team, keeperTotal = 0, teamKey = "", adminView = false) {
+  const ratingFn = adminView ? drawRating : rating;
+  const media = team.length ? avg(team.map(ratingFn)) : 0;
+  const adjusted = adminView ? avg(team.map(drawRating)) + (keeperTotal === 1 && keeperCount(team) === 1 ? 2 : 0) : adjustedTeamMedia(team, keeperTotal);
   const stats = playerStats();
   const goals = teamGoalPower(team, stats).toFixed(2);
   const adjustedText = adjusted !== media ? ` | Media ajustada ${adjusted}` : "";
-  const adminAttr = isAdmin() && teamKey ? ` draggable="true" data-player-id="{ID}" data-team="${teamKey}"` : "";
   const rows = team.map((p) => {
-    const attr = isAdmin() && teamKey ? ` draggable="true" data-player-id="${p.id}" data-team="${teamKey}"` : "";
-    const displayRating = isAdmin() ? drawRating(p) : rating(p);
-    return `<div class="rank-line draw-player-row"${attr}><span>${p.nickname}</span><strong>${displayRating} ${playerPositionSummary(p)}</strong></div>`;
+    const attr = !adminView && isAdmin() && teamKey ? ` draggable="true" data-player-id="${p.id}" data-team="${teamKey}"` : "";
+    return `<div class="rank-line draw-player-row"${attr}><span>${p.nickname}</span><strong>${ratingFn(p)} ${playerPositionSummary(p)}</strong></div>`;
   }).join("");
-  return `<article class="team-box"><h3>${title} | Media ${media}${adjustedText} | G/P ${goals}</h3>${rows}</article>`;
+  return `<article class="team-box${adminView ? " team-box--admin" : ""}"><h3>${title} | Media ${media}${adjustedText} | G/P ${goals}</h3>${rows}</article>`;
 }
 
 function renderPairs() {
