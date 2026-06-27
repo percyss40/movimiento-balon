@@ -1506,7 +1506,8 @@ function splitScore(teamA, teamB, stats, keeperTotal) {
   const spreadPenalty = drawSpreadPenalty(teamA, teamB);
   const separatePairPenalty = drawSeparatePairPenalty(teamA, teamB);
   const togetherPenalty = togetherHistoryPenalty(teamA, teamB);
-  return ratingDiff * 25 + goalDiff * 30 + keeperPenalty + positionPenalty + elitePenalty + lowRatingPenalty + tierPenalty + neighborPenalty + spreadPenalty + separatePairPenalty + togetherPenalty;
+  const syPenalty = schneiderYavorskiPenalty(teamA, teamB);
+  return ratingDiff * 25 + goalDiff * 30 + keeperPenalty + positionPenalty + elitePenalty + lowRatingPenalty + tierPenalty + neighborPenalty + spreadPenalty + separatePairPenalty + togetherPenalty + syPenalty;
 }
 
 function adjustedTeamMedia(team, keeperTotal) {
@@ -1515,8 +1516,21 @@ function adjustedTeamMedia(team, keeperTotal) {
   return media + oneKeeperBonus;
 }
 
+const drawRatingOffsets = {
+  "player-yavorski-javier": 3,
+  "player-fernandez-harry-guillermo": -2,
+  "player-zapana-daniel": -3,
+  "player-geslao-gaston": -4,
+  "player-perez-lezcano-francisco": 1,
+  "player-chino": 1,
+  "player-chesani-luciano": 1,
+  "player-cardozo-manuel": -1,
+  "player-martinez-alejandro": -1,
+  "player-schneider-agustin": 3,
+};
+
 function drawRating(player) {
-  return rating(player);
+  return rating(player) + (drawRatingOffsets[player.id] || 0);
 }
 
 function adjustedTeamDrawMedia(team, keeperTotal) {
@@ -1601,6 +1615,13 @@ function drawSeparatePairPenalty(teamA, teamB) {
   const sameA = [...drawSeparatePairIds].every((id) => teamA.some((p) => p.id === id));
   const sameB = [...drawSeparatePairIds].every((id) => teamB.some((p) => p.id === id));
   return sameA || sameB ? 260 : 0;
+}
+
+function schneiderYavorskiPenalty(teamA, teamB) {
+  const ids = ["player-schneider-agustin", "player-yavorski-javier"];
+  const togetherA = ids.every((id) => teamA.some((p) => p.id === id));
+  const togetherB = ids.every((id) => teamB.some((p) => p.id === id));
+  return togetherA || togetherB ? 9999 : 0;
 }
 
 function positionBalancePenalty(teamA, teamB) {
