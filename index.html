@@ -304,7 +304,10 @@
         <p id="draw-counter" class="draw-counter">0/14 seleccionados</p>
         <div id="confirmed-list" class="check-grid"></div>
         <div id="draw-result" class="two-col"></div>
-        <button class="secondary hidden" id="save-draw" data-admin-only>Guardar partido sorteado</button>
+        <div class="draw-actions hidden" id="draw-actions">
+          <button class="ghost dark" id="reshuffle-draw" data-admin-only>Rehacer equipos</button>
+          <button class="secondary" id="save-draw" data-admin-only>Guardar partido sorteado</button>
+        </div>
       </section>
 
       <section id="pairs" class="panel">

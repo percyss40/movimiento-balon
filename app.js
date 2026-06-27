@@ -316,7 +316,7 @@ function updateAdminVisibility() {
   if (!isAdmin()) {
     $("player-form")?.classList.add("hidden");
     $("match-form")?.classList.add("hidden");
-    $("save-draw")?.classList.add("hidden");
+    $("draw-actions")?.classList.add("hidden");
   }
 }
 
@@ -1416,8 +1416,127 @@ function generateTeams() {
   const keeperTotal = selected.filter((p) => p.position === "Arquero").length;
   const { teamA, teamB } = bestTeamSplit(selected);
   pendingDraw = { teamA: teamA.map((p) => p.id), teamB: teamB.map((p) => p.id) };
-  $("draw-result").innerHTML = [teamBox("Equipo Blanco", teamA, keeperTotal), teamBox("Equipo Negro", teamB, keeperTotal)].join("");
-  $("save-draw").classList.remove("hidden");
+  renderDrawResult(keeperTotal);
+  $("draw-actions").classList.remove("hidden");
+}
+
+function renderDrawResult(keeperTotal) {
+  if (!pendingDraw) return;
+  const kTotal = keeperTotal !== undefined ? keeperTotal : pendingDraw.teamA.concat(pendingDraw.teamB)
+    .map((id) => byId(id)).filter((p) => p && p.position === "Arquero").length;
+  const teamA = pendingDraw.teamA.map((id) => byId(id)).filter(Boolean);
+  const teamB = pendingDraw.teamB.map((id) => byId(id)).filter(Boolean);
+  $("draw-result").innerHTML = [
+    teamBox("Equipo Blanco", teamA, kTotal, "teamA"),
+    teamBox("Equipo Negro", teamB, kTotal, "teamB")
+  ].join("");
+  if (isAdmin()) initDrawDragDrop();
+}
+
+function reshuffleTeams() {
+  if (!pendingDraw) return;
+  const allIds = [...pendingDraw.teamA, ...pendingDraw.teamB];
+  const allPlayers = allIds.map((id) => byId(id)).filter(Boolean);
+  const keeperTotal = allPlayers.filter((p) => p.position === "Arquero").length;
+  const stats = playerStats();
+  const targetA = Math.ceil(allPlayers.length / 2);
+  const targetB = Math.floor(allPlayers.length / 2);
+  const keepers = allPlayers.filter((p) => p.position === "Arquero");
+  const currentSet = new Set([...pendingDraw.teamA].sort().join("|") + "|" + [...pendingDraw.teamB].sort().join("|"));
+
+  // Collect candidates that differ by ~3 swaps (2-4 players changed per team)
+  let candidates = [];
+  for (let mask = 1; mask < (1 << allPlayers.length) - 1; mask += 1) {
+    const teamA = [];
+    const teamB = [];
+    allPlayers.forEach((p, i) => ((mask >> i) & 1 ? teamA : teamB).push(p));
+    if (![targetA, targetB].includes(teamA.length)) continue;
+    if (keepers.length === 2 && Math.abs(keeperCount(teamA) - keeperCount(teamB)) !== 0) continue;
+    // Count how many players moved vs current draw
+    const changedA = teamA.filter((p) => !pendingDraw.teamA.includes(p.id)).length;
+    if (changedA < 2 || changedA > 4) continue;
+    const key = [...teamA.map((p) => p.id)].sort().join("|") + "|" + [...teamB.map((p) => p.id)].sort().join("|");
+    if (currentSet.has(key)) continue;
+    candidates.push({ teamA, teamB, score: splitScore(teamA, teamB, stats, keeperTotal) });
+  }
+
+  if (!candidates.length) {
+    // Fallback: any different valid split
+    for (let mask = 1; mask < (1 << allPlayers.length) - 1; mask += 1) {
+      const teamA = [];
+      const teamB = [];
+      allPlayers.forEach((p, i) => ((mask >> i) & 1 ? teamA : teamB).push(p));
+      if (![targetA, targetB].includes(teamA.length)) continue;
+      if (keepers.length === 2 && Math.abs(keeperCount(teamA) - keeperCount(teamB)) !== 0) continue;
+      candidates.push({ teamA, teamB, score: splitScore(teamA, teamB, stats, keeperTotal) });
+    }
+  }
+
+  // Pick from top 10 candidates randomly to get variety
+  candidates.sort((a, b) => a.score - b.score);
+  const pool = candidates.slice(1, Math.min(11, candidates.length));
+  if (!pool.length) return alert("No hay otra combinación posible con estos jugadores.");
+  const pick = pool[Math.floor(Math.random() * pool.length)];
+  pendingDraw = { teamA: pick.teamA.map((p) => p.id), teamB: pick.teamB.map((p) => p.id) };
+  renderDrawResult(keeperTotal);
+  $("draw-actions").classList.remove("hidden");
+}
+
+function initDrawDragDrop() {
+  let draggedId = null;
+  let draggedTeam = null;
+
+  document.querySelectorAll("#draw-result .draw-player-row").forEach((row) => {
+    row.setAttribute("draggable", "true");
+
+    row.addEventListener("dragstart", (e) => {
+      draggedId = row.dataset.playerId;
+      draggedTeam = row.dataset.team;
+      row.classList.add("dragging");
+      e.dataTransfer.effectAllowed = "move";
+    });
+
+    row.addEventListener("dragend", () => {
+      row.classList.remove("dragging");
+      document.querySelectorAll("#draw-result .draw-player-row").forEach((r) => r.classList.remove("drag-over"));
+    });
+
+    row.addEventListener("dragover", (e) => {
+      e.preventDefault();
+      e.dataTransfer.dropEffect = "move";
+      if (row.dataset.playerId !== draggedId) row.classList.add("drag-over");
+    });
+
+    row.addEventListener("dragleave", () => row.classList.remove("drag-over"));
+
+    row.addEventListener("drop", (e) => {
+      e.preventDefault();
+      row.classList.remove("drag-over");
+      const targetId = row.dataset.playerId;
+      const targetTeam = row.dataset.team;
+      if (!draggedId || draggedId === targetId) return;
+
+      if (draggedTeam === targetTeam) {
+        // Swap within same team (reorder)
+        const team = pendingDraw[draggedTeam];
+        const fromIdx = team.indexOf(draggedId);
+        const toIdx = team.indexOf(targetId);
+        if (fromIdx === -1 || toIdx === -1) return;
+        team.splice(fromIdx, 1);
+        team.splice(toIdx, 0, draggedId);
+      } else {
+        // Swap between teams
+        const fromTeam = pendingDraw[draggedTeam];
+        const toTeam = pendingDraw[targetTeam];
+        const fromIdx = fromTeam.indexOf(draggedId);
+        const toIdx = toTeam.indexOf(targetId);
+        if (fromIdx === -1 || toIdx === -1) return;
+        fromTeam[fromIdx] = targetId;
+        toTeam[toIdx] = draggedId;
+      }
+      renderDrawResult();
+    });
+  });
 }
 
 function updateDrawCounter() {
@@ -1643,13 +1762,18 @@ function fallbackTeamSplit(players) {
   return { teamA, teamB };
 }
 
-function teamBox(title, team, keeperTotal = 0) {
+function teamBox(title, team, keeperTotal = 0, teamKey = "") {
   const media = team.length ? avg(team.map(rating)) : 0;
   const adjusted = adjustedTeamMedia(team, keeperTotal);
   const stats = playerStats();
   const goals = teamGoalPower(team, stats).toFixed(2);
   const adjustedText = adjusted !== media ? ` | Media ajustada ${adjusted}` : "";
-  return `<article class="team-box"><h3>${title} | Media ${media}${adjustedText} | G/P ${goals}</h3>${team.map((p) => `<div class="rank-line"><span>${p.nickname}</span><strong>${rating(p)} ${playerPositionSummary(p)}</strong></div>`).join("")}</article>`;
+  const adminAttr = isAdmin() && teamKey ? ` draggable="true" data-player-id="{ID}" data-team="${teamKey}"` : "";
+  const rows = team.map((p) => {
+    const attr = isAdmin() && teamKey ? ` draggable="true" data-player-id="${p.id}" data-team="${teamKey}"` : "";
+    return `<div class="rank-line draw-player-row"${attr}><span>${p.nickname}</span><strong>${rating(p)} ${playerPositionSummary(p)}</strong></div>`;
+  }).join("");
+  return `<article class="team-box"><h3>${title} | Media ${media}${adjustedText} | G/P ${goals}</h3>${rows}</article>`;
 }
 
 function renderPairs() {
@@ -2941,13 +3065,17 @@ $("awards-season").addEventListener("change", (event) => {
   selectedAwardsSeason = event.target.value;
   renderAwards();
 });
+$("reshuffle-draw").addEventListener("click", () => {
+  if (!requireAdmin()) return;
+  reshuffleTeams();
+});
 $("save-draw").addEventListener("click", () => {
   if (!requireAdmin()) return;
   if (!pendingDraw) return;
   const id = uid("match");
   state.matches.push({ id, date: today(), venue: "Partido sorteado", teamA: pendingDraw.teamA, teamB: pendingDraw.teamB, scoreA: 0, scoreB: 0, scorers: [], assisters: [], mvp: "", comment: "Partido generado desde el sorteador. Editar resultado al terminar." });
   pendingDraw = null;
-  $("save-draw").classList.add("hidden");
+  $("draw-actions").classList.add("hidden");
   renderAll();
   document.querySelector('[data-tab="matches"]').click();
 });

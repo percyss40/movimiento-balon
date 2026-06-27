@@ -1381,6 +1381,26 @@ input:focus, select:focus, textarea:focus {
   color: var(--ink);
 }
 
+.draw-player-row[draggable="true"] {
+  cursor: grab;
+  transition: background 0.15s, opacity 0.15s;
+}
+.draw-player-row[draggable="true"]:active { cursor: grabbing; }
+.draw-player-row.dragging { opacity: 0.4; }
+.draw-player-row.drag-over {
+  background: rgba(255,255,255,.08);
+  border-radius: 6px;
+  outline: 2px dashed var(--accent, #fff);
+  outline-offset: -2px;
+}
+
+.draw-actions {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-top: 4px;
+}
+
 /* ===== CALENDAR ===== */
 .year-controls {
   display: flex;
