@@ -1771,7 +1771,8 @@ function teamBox(title, team, keeperTotal = 0, teamKey = "") {
   const adminAttr = isAdmin() && teamKey ? ` draggable="true" data-player-id="{ID}" data-team="${teamKey}"` : "";
   const rows = team.map((p) => {
     const attr = isAdmin() && teamKey ? ` draggable="true" data-player-id="${p.id}" data-team="${teamKey}"` : "";
-    return `<div class="rank-line draw-player-row"${attr}><span>${p.nickname}</span><strong>${rating(p)} ${playerPositionSummary(p)}</strong></div>`;
+    const displayRating = isAdmin() ? drawRating(p) : rating(p);
+    return `<div class="rank-line draw-player-row"${attr}><span>${p.nickname}</span><strong>${displayRating} ${playerPositionSummary(p)}</strong></div>`;
   }).join("");
   return `<article class="team-box"><h3>${title} | Media ${media}${adjustedText} | G/P ${goals}</h3>${rows}</article>`;
 }
