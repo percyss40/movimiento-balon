@@ -1672,7 +1672,7 @@ function keeperCount(team) {
 }
 
 function eliteCount(team) {
-  return team.filter((p) => rating(p) >= 88).length;
+  return team.filter((p) => drawRating(p) >= 88).length;
 }
 
 function eliteBalancePenalty(teamA, teamB) {
@@ -1684,7 +1684,7 @@ function eliteBalancePenalty(teamA, teamB) {
 }
 
 function lowRatingCount(team) {
-  return team.filter((p) => rating(p) < 81).length;
+  return team.filter((p) => drawRating(p) < 81).length;
 }
 
 function lowRatingBalancePenalty(teamA, teamB) {
@@ -1696,7 +1696,7 @@ function lowRatingBalancePenalty(teamA, teamB) {
 }
 
 function ratingTier(player) {
-  const value = rating(player);
+  const value = drawRating(player);
   if (value < 79) return "low";
   if (value < 83) return "midLow";
   if (value < 88) return "midHigh";
@@ -1716,11 +1716,11 @@ function ratingTierBalancePenalty(teamA, teamB) {
 }
 
 function ratingNeighborPenalty(teamA, teamB) {
-  const players = [...teamA, ...teamB].slice().sort((a, b) => rating(a) - rating(b));
+  const players = [...teamA, ...teamB].slice().sort((a, b) => drawRating(a) - drawRating(b));
   const teamAIds = new Set(teamA.map((p) => p.id));
   return players.slice(0, -1).reduce((sum, player, index) => {
     const next = players[index + 1];
-    const closeRating = Math.abs(rating(player) - rating(next)) <= 3;
+    const closeRating = Math.abs(drawRating(player) - drawRating(next)) <= 3;
     const sameTeam = teamAIds.has(player.id) === teamAIds.has(next.id);
     return sum + (closeRating && sameTeam ? 90 : 0);
   }, 0);
